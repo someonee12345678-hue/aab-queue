@@ -4,12 +4,13 @@
   "task_id": "AAB-V05-TEST-001",
   "source_repository": "someonee12345678-hue/aab-queue",
   "source_pull_request_number": 2,
-  "status": "POSTING_PENDING",
+  "status": "COMPLETED",
   "request_identity": {
     "protocol": "AAB-001/0.3",
     "operation": "ANALYZE_REPORT",
     "report_type": "ANDROID_BUILD",
     "build_id": "synthetic-v05",
     "reported_status": "PASS"
-  }
+  },
+  "posted_comment_id": 6225751626
 }
