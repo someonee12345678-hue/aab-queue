@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "project": "AAB-001",
+  "tracking_branch": "mc/channel",
+  "as_of_utc": "2026-10-17T07:19:00Z",
+  "target": "Bounded unattended GitHub-to-Grok programming, GitHub verification, automatic ChatGPT review/return, and one observed feedback cycle",
+  "forecast_basis": "Subjective three-point engineering hours, adjusted with new evidence; not statistical confidence bounds or an SLA",
+  "measured_history": [
+    {
+      "name": "v0.3 GitHub wake to code handoff",
+      "start_utc": "2026-10-17T05:18:47Z",
+      "end_utc": "2026-10-17T05:20:34Z",
+      "elapsed_minutes": 1.8,
+      "limitation": "Small bounded synthetic programming task; full engineering preparation excluded"
+    },
+    {
+      "name": "v0.4 two-wake start to handoff",
+      "start_utc": "2026-10-17T05:32:23Z",
+      "end_utc": "2026-10-17T05:36:37Z",
+      "elapsed_minutes": 4.2,
+      "limitation": "Small two-function coding task; authorisation and setup excluded"
+    },
+    {
+      "name": "Pocket Task Board handoff to ChatGPT review result",
+      "start_utc": "2026-10-17T06:20:48Z",
+      "end_utc": "2026-10-17T06:31:50Z",
+      "elapsed_minutes": 11,
+      "limitation": "Manual ChatGPT wake; not evidence of automated review latency"
+    }
+  ],
+  "completed_milestones": [
+    {
+      "id": "MVP_APP",
+      "label": "Grok-built Pocket Task Board independently accepted",
+      "evidence": "GitHub PR 2 comment 6230714074"
+    },
+    {
+      "id": "CROSS_WAKE",
+      "label": "Two Grok wake events with persisted checkpoint",
+      "evidence": "GitHub PR 2 comments 6230241582 and 6230256538"
+    }
+  ],
+  "milestones": [
+    {
+      "id": "BUDGET",
+      "label": "Verify GitHub Actions free allowance and $0 overage guard",
+      "status": "TODO",
+      "active_hours": {
+        "optimistic": 0.25,
+        "likely": 0.75,
+        "pessimistic": 2
+      },
+      "evidence": null
+    },
+    {
+      "id": "CI",
+      "label": "Set up one least-privilege GitHub Actions test and validate once",
+      "status": "TODO",
+      "active_hours": {
+        "optimistic": 0.5,
+        "likely": 1.5,
+        "pessimistic": 4
+      },
+      "evidence": null
+    },
+    {
+      "id": "EVENT_ID",
+      "label": "Determine reliable identification of new Grok handoff from ChatGPT event wake",
+      "status": "TODO",
+      "active_hours": {
+        "optimistic": 1,
+        "likely": 3,
+        "pessimistic": 8
+      },
+      "evidence": null
+    },
+    {
+      "id": "REVIEW_RETURN",
+      "label": "Add exactly-once-minded automatic ChatGPT review/return for one allowlisted handoff",
+      "status": "TODO",
+      "active_hours": {
+        "optimistic": 2,
+        "likely": 5,
+        "pessimistic": 12
+      },
+      "evidence": null
+    },
+    {
+      "id": "FEEDBACK",
+      "label": "Grok receives review decision and autonomously performs a bounded correction if needed",
+      "status": "TODO",
+      "active_hours": {
+        "optimistic": 1.5,
+        "likely": 4,
+        "pessimistic": 10
+      },
+      "evidence": null
+    },
+    {
+      "id": "DEMO",
+      "label": "Prove one end-to-end result with deduplication and durable evidence",
+      "status": "TODO",
+      "active_hours": {
+        "optimistic": 1,
+        "likely": 2.5,
+        "pessimistic": 6
+      },
+      "evidence": null
+    },
+    {
+      "id": "ANDROID",
+      "label": "Optional owner phone-browser smoke test of Pocket Task Board",
+      "status": "TODO",
+      "active_hours": {
+        "optimistic": 0.25,
+        "likely": 1,
+        "pessimistic": 3
+      },
+      "evidence": null
+    }
+  ],
+  "status_policy": "Do not mark DONE without exact verifiable GitHub comment/file/test evidence. Change only tasks, timestamps, and engineering-hour judgments backed by new observations.",
+  "update_policy": "Manual read-only calculator today. GitHub stores inputs; no task watcher, CI workflow, background job, paid service, or live automatic status changes have been enabled."
+}
