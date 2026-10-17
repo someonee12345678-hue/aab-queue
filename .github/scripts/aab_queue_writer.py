@@ -179,6 +179,8 @@ def execute_with_receipt(report, read_json, create_json, receipt_path,
         "note": "Metadata-only attempt receipt; not a successful handoff or code review.",
     }
     try:
+        if not isinstance(report, dict) or not isinstance(report.get("status"), str):
+            raise QueueBlocked("classification report missing or invalid")
         result = process(report, read_json, create_json)
         receipt["outcome"] = result["outcome"]
         receipt["reason_code"] = "NONE"
