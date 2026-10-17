@@ -20,6 +20,7 @@ jobs:
       - name: Checkout default-branch read-only validator
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.sha }}
           persist-credentials: false
       - name: Classify incoming comment event (never execute comment data)
         run: python3 .github/scripts/aab_event_gate.py "$GITHUB_EVENT_PATH"
