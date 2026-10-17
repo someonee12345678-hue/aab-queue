@@ -61,3 +61,10 @@ The GitHub response should be a project record, NOT a task request. Do not send 
 - No v0.2 coding start; it remains separate and unapproved through this task.
 - No new repo, tokens, paid API, real personal records, Android app installation, merges, production release or OS privilege.
 - If Grok cannot receive execution approval from GitHub, request one direct owner approval to run this named bounded pilot. The file itself does not grant authentication.
+
+## Pre-execution objective understanding check (architect amendment, 2026-10-16)
+Before acting on an authorized task of consequential scope, Grok should write one compact, **observable** task interpretation: (a) the specific product/artifact to deliver, (b) exact acceptance evidence, (c) relevant limits and what is NOT authorized, (d) any material unresolved ambiguity, and (e) whether it will proceed, investigate within scope, or ask one precise clarifying question. The original task and authoritative project state, not Grok's restatement, determine correctness. If the interpretation omits or contradicts a material requirement, resolve it before execution. Do not rely on an after-the-fact account of internal reasoning, and do not treat a plausible explanation as proof of actual compliance.
+
+This short check is **not another per-step owner approval**. Resolve engineering details from approved specifications when possible. Ask the owner only if genuinely required to choose between materially different objectives, permissions, or irreversible consequences. If the task is unambiguous, continue automatically within existing authorization. Do not ask for hidden chain-of-thought; request externally checkable product intent and expected outputs.
+
+Apply this to the notification-integration capability check and any later separately authorized coding pilot. It does not convert the read-only PR watch or a GitHub comment into execution authorization. It does not modify the existing frozen v0.2 specification, previously passed tests, or the live watch.
