@@ -1,4 +1,7 @@
 # AAB-001 — MAIN Conversation Recovery / Resume Checkpoint
+
+> **LATEST CONTINUITY UPDATE (2026-10-17):** This is a historical checkpoint, not the current phone gate. Read [the capability ledger](recovery/CAPABILITY_LEDGER.md) and [CURRENT_STATE.json](recovery/CURRENT_STATE.json) first. User screenshot verifies **Termux Python 3.14.6**; do **not** request another Python version check unless the environment changes. A genuine GitHub queue receipt now exists at `channel/handoffs/6236560957.json`, Actions run `39049184153` PASS, and AAB Doctor source/test review is 18/18 PASS. **Android execution of Doctor remains unverified.**
+
 As of 2026-10-17 13:34 UTC. Project: **Android AI Bridge** (do not conflate with Elite Kit, USB, Genesis, APCCS or legal workspace). Owner: Android phone only, $0-first, minimum manual relay, no credentials on third-party computers.
 
 ## Authority and repo
