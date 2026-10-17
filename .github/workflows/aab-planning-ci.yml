@@ -1,0 +1,30 @@
+name: AAB Planning Calculator Acceptance
+
+on:
+  push:
+    branches:
+      - mc/channel
+    paths:
+      - channel/planning/**
+      - .github/workflows/aab-planning-ci.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aab-planning-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  planning-tests:
+    name: Planning read-only acceptance tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Run recorded planning tests
+        working-directory: channel/planning
+        run: python3 -m unittest -v test_progress_report
