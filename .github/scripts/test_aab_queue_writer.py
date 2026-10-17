@@ -104,6 +104,23 @@ class QueueTests(unittest.TestCase):
         with self.assertRaises(QueueBlocked):
             build_record(report, COMMENT)
 
+    def test_forbidden_comment_fetch_stops_before_write(self):
+        def read(url):
+            self.assertTrue(url.endswith(f"/issues/comments/{ID}"))
+            raise ApiError(403, "Forbidden", "GET", f"/repos/someonee12345678-hue/aab-queue/issues/comments/{ID}")
+        with self.assertRaises(ApiError) as caught:
+            process(REPORT, read, lambda a, b: self.fail("write"))
+        self.assertIn(f"GET /repos/someonee12345678-hue/aab-queue/issues/comments/{ID}", str(caught.exception))
+        self.assertNotIn("Bearer", str(caught.exception))
+
+    def test_non_object_existing_entry_fails_closed(self):
+        def read(url):
+            if url.endswith(f"/issues/comments/{ID}"):
+                return COMMENT
+            return {"content": base64.b64encode(b"[]").decode()}
+        with self.assertRaisesRegex(QueueBlocked, "must be a JSON object"):
+            process(REPORT, read, lambda a, b: self.fail("write"))
+
 
 if __name__ == "__main__":
     unittest.main()
