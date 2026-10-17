@@ -198,6 +198,17 @@ class QueueTests(unittest.TestCase):
                 receipt))
             self.assertEqual(json.loads(receipt.read_text())["outcome"], "IGNORED")
 
+    def test_missing_or_malformed_classifier_report_blocks(self):
+        for report in ({}, [], {"status": None}):
+            with self.subTest(report=report), tempfile.TemporaryDirectory() as directory:
+                receipt = Path(directory) / "outcome.json"
+                summary = Path(directory) / "summary.md"
+                self.assertFalse(execute_with_receipt(
+                    report, lambda url: self.fail("read"), lambda a, b: self.fail("write"),
+                    receipt, summary))
+                self.assertEqual(json.loads(receipt.read_text())["outcome"], "BLOCKED")
+                self.assertIn("BLOCKED:VALIDATION_OR_CONFLICT", summary.read_text())
+
 
 if __name__ == "__main__":
     unittest.main()
