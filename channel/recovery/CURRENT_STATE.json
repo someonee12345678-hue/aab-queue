@@ -77,7 +77,7 @@
     "do_not_do": "Do not paste the MAIN resume prompt into Bash. Do not fetch/pull/push, authenticate gh, run the Doctor, edit files or run an agent yet.",
     "after": "Send the resulting commit SHA or a screenshot to the MAIN ChatGPT thread."
   },
-  "resume_prompt": "MAIN — Resume AAB-001. Read latest channel/recovery/CURRENT_STATE.json, channel/recovery/CAPABILITY_LEDGER.md, channel/assignment_controller_v01/CHECKPOINT-2026-10-17.md from private someonee12345678-hue/aab-queue branch mc/channel. Assignment controller 12/12 PASS; no automatic dispatch. Phone Python 3.14.6 verified; local Doctor file missing. Next single read-only Termux command: git rev-parse HEAD. Do not repeat tests, replay events or alter v0.6/PING processors.",
+  "resume_prompt": "MAIN — Resume AAB-001 from private repo someonee12345678-hue/aab-queue mc/channel. FIRST read AGENTS.md, channel/recovery/OPERATING_RULES.md, CURRENT_STATE.json and CAPABILITY_LEDGER.md, plus relevant latest verified checkpoint. Owner-selected architecture: GitHub + Grok + authorized local phone-side Codex + ChatGPT reviewer. No browser stealth, no secret relay, no repeated passed checks or v0.6/PING task modification. Verified queue receipt 6236560957 and independent Doctor 18/18, controller 12/12 proposal-only. Phone Python 3.14.6 already verified; Doctor absent locally in last screenshot. SINGLE current phone gate: in ~/aab-queue run git rev-parse HEAD and report SHA; compare with live remote mc/channel before sync.",
   "device_capability_ledger": "channel/recovery/CAPABILITY_LEDGER.md",
   "phone_evidence": {
     "observed_date_local": "2026-10-17 10:02 America/Vancouver",
@@ -116,5 +116,15 @@
     "phone_work_execution": false,
     "report_artifact_id": 12107944083,
     "artifact_retention_days": 7
+  },
+  "operating_policy": {
+    "status": "OWNER_DIRECTED_PROJECT_POLICY_PERSISTED",
+    "rules": "channel/recovery/OPERATING_RULES.md",
+    "repo_agent_instructions": "AGENTS.md",
+    "owner_architecture_decision": "channel/AAB-001-ARCHITECTURE-DECISION-GITHUB-GROK-PHONE-CODEX-2026-10-17.md",
+    "primary_design": "GitHub event queue and independent CI; Grok approved programming; Android phone-side Codex as separately authorized local agent; ChatGPT architecture/review",
+    "no_browser_stealth": true,
+    "no_implicit_auth_or_agent_execution": true,
+    "loading_rule": "Read these files with capability ledger and verified checkpoint at the start of future AAB-001 MAIN sessions. Repository instructions are NOT model-wide memory or proof of automatic load."
   }
 }
