@@ -30,6 +30,7 @@ jobs:
       - name: Checkout trusted default-branch scripts
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.sha }}
           persist-credentials: false
       - name: Run synthetic no-network queue tests
         run: python3 -m unittest discover -v -s .github/scripts -p 'test_aab_queue_writer.py'
