@@ -145,13 +145,11 @@
     "caveat": "A watch schedule is not a guarantee of GitHub connector access or successful background documentation."
   },
   "latest_main_handoff": {
-    "path": "channel/recovery/AAB-001-FULL-MAIN-HANDOFF-2026-10-17-1532-PT.md",
-    "observed_local_time": "2026-10-17 15:32 America/Vancouver",
-    "verified_saved_commit": "0fe1cc19307b7c66fe6a85e1cfba18e0588095e8",
-    "latest_user_evidence": "Owner's Android Chrome screenshots confirm explicit maximum-conversation-length banner in former MAIN; active GitHub repository and prior verified tests still exist.",
+    "path": "channel/recovery/AAB-001-MAIN-RECOVERY-2026-10-17-1547-PT.md",
+    "observed_local_time": "2026-10-17 15:47 America/Vancouver",
+    "verified_saved_commit": "25e8d046b45e6027f92c43ad2950e3e3defb543a",
     "incident_code": "AAB-ERR-CHAT-001",
-    "repeated_tests": "DO_NOT_REPEAT",
-    "next_phone_gate": "git rev-parse HEAD (read-only in ~/aab-queue); compare to fresh remote mc/channel before any sync",
-    "assumptions": "Past architecture screenshots referenced but not independently compared image-by-image; use current owner-selected GitHub+Grok+phone Codex decision as governing."
+    "next_phone_gate": "git rev-parse HEAD (read-only in ~/aab-queue); compare with refreshed remote mc/channel before any sync",
+    "note": "Prior MAIN exhausted conversation length; other stalls unverified. Saved a compact checked recovery file. Existing 18/18 and 12/12 passing tests preserved."
   }
 }
