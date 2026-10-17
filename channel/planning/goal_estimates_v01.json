@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project": "AAB-001",
   "tracking_branch": "mc/channel",
-  "as_of_utc": "2026-10-17T07:35:28Z",
+  "as_of_utc": "2026-10-17T07:46:55Z",
   "target": "Bounded unattended GitHub-to-Grok programming, GitHub verification, automatic ChatGPT review/return, and one observed feedback cycle",
   "forecast_basis": "Subjective three-point engineering hours, adjusted with new evidence; not statistical confidence bounds or an SLA",
   "measured_history": [
@@ -38,6 +38,11 @@
       "id": "CROSS_WAKE",
       "label": "Two Grok wake events with persisted checkpoint",
       "evidence": "GitHub PR 2 comments 6230241582 and 6230256538"
+    },
+    {
+      "id": "GITHUB_EVENT_GATE",
+      "label": "GitHub native comment event identity and safe read-only classification",
+      "evidence": "Actions run 39014903156, canary comment 6231365911"
     }
   ],
   "milestones": [
@@ -62,6 +67,17 @@
         "pessimistic": 4
       },
       "evidence": "GitHub Actions run 39014190117 on mc/channel, head commit dcdf715f07c140b1b906ba20f9dff3f2bc29ce29; job 117342767916 success, logs 'Ran 8 tests ... OK' on 2026-10-17T07:35Z; workflow .github/workflows/aab-mvp-python-ci.yml"
+    },
+    {
+      "id": "GITHUB_EVENT_GATE",
+      "label": "GitHub PR #2 comment event identity and no-write classification in Actions",
+      "status": "DONE",
+      "active_hours": {
+        "optimistic": 0,
+        "likely": 0,
+        "pessimistic": 0
+      },
+      "evidence": "GitHub Actions successful issue_comment run 39014903156 on default HEAD at 2026-10-17T07:46Z; job 117344896911 logged source_comment_id 6231365911 and IGNORED_NOT_HANDOFF, uploaded artifact 12094442783. Positive handoff identification tested locally only; independent review routing not proven."
     },
     {
       "id": "EVENT_ID",
