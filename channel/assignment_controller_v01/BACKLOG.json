@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "project": "AAB-001",
+  "repository": "someonee12345678-hue/aab-queue",
+  "branch": "mc/channel",
+  "controller_mode": "PROPOSE_ONLY",
+  "automatic_dispatch_enabled": false,
+  "stop_requested": false,
+  "description": "Automatic GitHub-based assignment proposals only. No agent execution, issue comments, permission changes or token use. Proposals never grant authorization.",
+  "checkpoint_source": "channel/recovery/CURRENT_STATE.json",
+  "tasks": [
+    {
+      "id": "AAB-PHONE-REV-001",
+      "title": "Compare phone local clone revision with verified GitHub branch before updating phone files",
+      "role": "OWNER",
+      "kind": "READ_ONLY",
+      "status": "READY",
+      "priority": 10,
+      "depends_on": [],
+      "scope_id": "AAB-PHONE-AGENT-001",
+      "evidence": [
+        "2026-10-17 10:02 America/Vancouver owner screenshot: ~/aab-queue on mc/channel; doctor.py not found locally; remote HEAD observed separately"
+      ],
+      "suggested_owner_action": "git rev-parse HEAD",
+      "limits": "Single read-only command in Termux; no login/pull/push/edit; send screenshot to MAIN."
+    },
+    {
+      "id": "AAB-PHONE-DOCTOR-002",
+      "title": "One Android Termux Doctor readiness run after source revision and code presence are verified",
+      "role": "PHONE_CODEX",
+      "kind": "LOCAL_DIAGNOSTIC",
+      "status": "BLOCKED",
+      "priority": 20,
+      "depends_on": [
+        "AAB-PHONE-REV-001"
+      ],
+      "scope_id": "AAB-PHONE-AGENT-001",
+      "evidence": [],
+      "limits": "No automatic device invocation, credentials, network or installs. Requires separately approved verified source and owner local action."
+    },
+    {
+      "id": "AAB-REVIEW-ROUTE-003",
+      "title": "Read-only design of ChatGPT queue wake and safe review handoff",
+      "role": "CHATGPT",
+      "kind": "READ_ONLY",
+      "status": "BLOCKED",
+      "priority": 30,
+      "depends_on": [],
+      "scope_id": "AAB-001",
+      "evidence": [
+        "Existing v0.6/PING processors held for Support; no reliable ChatGPT event source ID"
+      ],
+      "limits": "No processor edits, event replay, unsupported automatic dispatch or ChatGPT session control."
+    }
+  ]
+}
