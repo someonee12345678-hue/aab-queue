@@ -9,7 +9,7 @@
   "default_branch": "HEAD",
   "pull_request": 2,
   "active_scope": "AAB-PHONE-AGENT-001",
-  "phase": "ANDROID_PREREQUISITE_CHECK_PENDING",
+  "phase": "ANDROID_DOCTOR_LOCAL_FILE_CHECK_PENDING",
   "triggering_recovery_code": "AAB-ERR-CHAT-001",
   "recovery_evidence": "Owner-provided screenshot of browser banner: You've reached the maximum length for this conversation, but you can keep talking by starting a new chat.",
   "completed": [
@@ -44,11 +44,11 @@
   ],
   "not_verified": [
     "Doctor execution on user's Android 16 Termux",
-    "Current phone Python version and compatibility",
     "GitHub CLI authentication on phone (previous screenshot showed not logged in)",
     "Persistent unattended Codex bridge or background agent",
     "Reliable native ChatGPT event wake with verified source comment ID",
-    "Complete unattended review-and-feedback loop"
+    "Complete unattended review-and-feedback loop",
+    "AAB Doctor execution on user's Android Termux (Python 3.14.6 compatible version installed, but doctor not run there)"
   ],
   "protected_constraints": [
     "Do not rerun prior passed 18 tests without changed source",
@@ -60,12 +60,27 @@
   ],
   "next_single_owner_action": {
     "chat": "MAIN",
-    "device": "Android phone, Termux",
-    "command": "python3 --version",
+    "device": "Android phone — Termux",
+    "command": "ls phone_agent_v01/doctor.py",
     "mode": "READ_ONLY",
-    "purpose": "Determine actual Python version before providing verified AAB Doctor script",
-    "do_not_do": "Do not install packages or authenticate GitHub/Codex in this step",
-    "after": "Share the exact version output or screenshot"
+    "purpose": "Check if the reviewed AAB Doctor script is present in the local ~/aab-queue clone; Python 3.14.6 already verified.",
+    "do_not_do": "Do not reinstall Python, authenticate gh, change branches, pull unreviewed code, or run an agent yet.",
+    "after": "Share output or screenshot; if the file is present, verify its source revision before its first Android diagnostic run."
   },
-  "resume_prompt": "MAIN — Resume AAB-001 from private GitHub someonee12345678-hue/aab-queue, mc/channel, channel/recovery/CURRENT_STATE.json and channel/recovery/AAB-001-ERROR-CODES-AND-RECOVERY-V01.md. Check source evidence freshness; continue from Android Python version gate, no repeat of passed tests."
+  "resume_prompt": "MAIN — Resume AAB-001 from someonee12345678-hue/aab-queue branch mc/channel, channel/recovery/CURRENT_STATE.json and channel/recovery/CAPABILITY_LEDGER.md. Python 3.14.6 in Termux verified by 2026-10-17 screenshot; do not ask version again without changed environment. Verify fresh GitHub and report one next step, no replays or processor changes.",
+  "device_capability_ledger": "channel/recovery/CAPABILITY_LEDGER.md",
+  "phone_evidence": {
+    "observed_date_local": "2026-10-17 09:43 America/Vancouver",
+    "source": "Owner screenshot of Termux",
+    "python3_version": "3.14.6",
+    "python3_version_status": "SCREENSHOT_VERIFIED",
+    "shell_working_directory": "~/aab-queue",
+    "gh_binary_status": "SCREENSHOT_VERIFIED earlier 2026-10-17; current GitHub login UNVERIFIED",
+    "phone_codex_reported_git_revision": "f02c77c (abbreviated; CODEX-REPORTED and not independently reconciled to current remote)"
+  },
+  "last_verified_runtime_evidence": {
+    "queue_receipt": "channel/handoffs/6236560957.json; GitHub Actions run 39049184153 SUCCESS",
+    "phone_agent": "channel/AAB-001-PHONE-AGENT-001-INDEPENDENT-REVIEW-2026-10-17.md; 18/18 independent PASS; phone execution UNVERIFIED",
+    "source": "connected GitHub read on 2026-10-17 and owner Termux screenshot"
+  }
 }
