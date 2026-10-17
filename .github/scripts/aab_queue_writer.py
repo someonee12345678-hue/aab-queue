@@ -31,8 +31,10 @@ class QueueBlocked(Exception):
 
 
 class ApiError(Exception):
-    def __init__(self, code, explanation=""):
-        super().__init__(f"GitHub API HTTP {code}: {explanation[:180]}")
+    def __init__(self, code, explanation="", method=None, api_path=None):
+        # Log only method/path, never bearer token or comment body.
+        target = f" during {method} {api_path}" if method and api_path else ""
+        super().__init__(f"GitHub API HTTP {code}{target}: {explanation[:180]}")
         self.code = code
 
 
@@ -121,6 +123,8 @@ def process(report, read_json, create_json):
             previous = json.loads(base64.b64decode(existing["content"]).decode("utf-8"))
         except (ValueError, UnicodeError) as exc:
             raise QueueBlocked("existing queue entry cannot be decoded") from exc
+        if not isinstance(previous, dict):
+            raise QueueBlocked("existing queue entry must be a JSON object")
         if (previous.get("source_comment_id"), previous.get("task_id"), previous.get("source_body_sha256")) != (cid, record["task_id"], record["source_body_sha256"]):
             raise QueueBlocked("conflicting pre-existing queue entry")
         return {"outcome": "ALREADY_QUEUED", "source_comment_id": cid, "path": path}
@@ -148,7 +152,11 @@ def github_request(url, token, body=None):
         with urllib.request.urlopen(req, timeout=15) as response:
             return json.load(response)
     except urllib.error.HTTPError as exc:
-        raise ApiError(exc.code, exc.reason) from exc
+        raise ApiError(exc.code, exc.reason, method, urllib.parse.urlsplit(url).path) from exc
+    except (urllib.error.URLError, TimeoutError) as exc:
+        raise QueueBlocked(f"GitHub connection failure during {method} {urllib.parse.urlsplit(url).path}") from exc
+    except (json.JSONDecodeError, UnicodeError) as exc:
+        raise QueueBlocked(f"GitHub returned invalid response during {method} {urllib.parse.urlsplit(url).path}") from exc
 
 
 def main():
