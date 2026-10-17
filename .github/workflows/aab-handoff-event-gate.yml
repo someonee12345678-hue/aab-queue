@@ -1,0 +1,32 @@
+name: AAB Handoff Event Gate
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aab-handoff-${{ github.event.comment.id }}
+  cancel-in-progress: false
+
+jobs:
+  classify:
+    if: ${{ github.repository == 'someonee12345678-hue/aab-queue' && github.event.issue.number == 2 && github.event.issue.pull_request != null }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: Checkout default-branch read-only validator
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Classify incoming comment event (never execute comment data)
+        run: python3 .github/scripts/aab_event_gate.py "$GITHUB_EVENT_PATH"
+      - name: Save structured read-only classification
+        uses: actions/upload-artifact@v4
+        with:
+          name: aab-handoff-event-${{ github.event.comment.id }}
+          path: aab-handoff-event-report.json
+          retention-days: 2
+          if-no-files-found: error
