@@ -1,4 +1,5 @@
 """Classify AAB handoff GitHub event metadata, without executing untrusted content."""
+import hashlib
 import json
 import os
 import re
@@ -11,8 +12,8 @@ HANDOFF_HEADER = re.compile(r"^#?\s*ARTIFACT_HANDOFF\s+[—-]\s+(AAB-[A-Za-z0-9_
 MAX_COMMENT_BYTES = 100_000
 
 
-def inspect(event):
-    """Only GitHub event envelope establishes transport identity, not authority."""
+def inspect(event, runtime=None):
+    """Report event identity as untrusted metadata, never proof of sender authority."""
     result = {"protocol": "AAB-001/handoff-event-v1", "status": "IGNORED", "verified_review": False}
     if event.get("action") != "created":
         return result
@@ -31,7 +32,30 @@ def inspect(event):
     if not isinstance(body, str):
         result["status"] = "UNVERIFIED_BAD_BODY"
         return result
-    if len(body.encode("utf-8")) > MAX_COMMENT_BYTES:
+    body_bytes = body.encode("utf-8")
+    author = comment.get("user") or {}
+    app = comment.get("performed_via_github_app") or {}
+    runtime = os.environ if runtime is None else runtime
+    run_id = runtime.get("GITHUB_RUN_ID")
+    attempt = runtime.get("GITHUB_RUN_ATTEMPT")
+    result.update({
+        "source_comment_node_id": comment.get("node_id"),
+        "comment_author_login": author.get("login"),
+        "comment_author_id": author.get("id"),
+        "author_association": comment.get("author_association"),
+        "posting_app_slug": app.get("slug"),
+        "posting_app_id": app.get("id"),
+        "event_created_at": comment.get("created_at"),
+        "event_updated_at": comment.get("updated_at"),
+        "comment_html_url": comment.get("html_url"),
+        "body_bytes": len(body_bytes),
+        "body_sha256": hashlib.sha256(body_bytes).hexdigest(),
+        "workflow_run_id": int(run_id) if run_id and run_id.isdecimal() else None,
+        "workflow_run_attempt": int(attempt) if attempt and attempt.isdecimal() else None,
+        "event_commit_sha": runtime.get("GITHUB_SHA"),
+        "identity_note": "Event metadata is not independent author authentication; re-fetch the comment ID and compare before any downstream review.",
+    })
+    if len(body_bytes) > MAX_COMMENT_BYTES:
         result["status"] = "UNVERIFIED_OVERSIZE"
         return result
     first = body.lstrip("\ufeff\n\r ").splitlines()[0].strip() if body.strip() else ""
@@ -42,8 +66,6 @@ def inspect(event):
     result.update({
         "status": "IDENTIFIED_PENDING_INDEPENDENT_REVIEW",
         "task_id": match.group(1),
-        "body_bytes": len(body.encode("utf-8")),
-        "event_created_at": comment.get("created_at"),
         "transport_scope_verified": True,
         "note": "Not authenticated as Grok or owner; source checksums/tests not reviewed."
     })
