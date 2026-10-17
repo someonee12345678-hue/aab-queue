@@ -25,6 +25,7 @@ jobs:
     permissions:
       contents: read
       issues: read
+      pull-requests: read
     runs-on: ubuntu-24.04
     timeout-minutes: 2
     steps:
@@ -78,6 +79,7 @@ jobs:
     permissions:
       contents: write
       issues: read
+      pull-requests: read
     runs-on: ubuntu-24.04
     timeout-minutes: 2
     steps:
