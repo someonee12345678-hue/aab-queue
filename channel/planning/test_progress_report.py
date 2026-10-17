@@ -41,7 +41,9 @@ class RealSnapshot(unittest.TestCase):
                          ["BUDGET", "EVENT_ID", "REVIEW_RETURN", "FEEDBACK",
                           "DEMO", "ANDROID"])
         self.assertEqual(r["blockers"], [])
-        self.assertEqual(len(r["recorded_achievements"]), 3)
+        self.assertEqual(
+            [item["id"] for item in r["recorded_achievements"]],
+            ["MVP_APP", "CROSS_WAKE", "GITHUB_EVENT_GATE", "AAB_MVP_APP_002"])
 
     def test_estimates_derived_from_data(self):
         e = pr.build_report(load())["estimate"]
