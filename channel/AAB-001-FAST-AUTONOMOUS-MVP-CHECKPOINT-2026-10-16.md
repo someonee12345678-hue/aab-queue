@@ -43,7 +43,13 @@ We need a REAL, bounded two-task autonomous programming chain, not another archi
 
 ## Status at checkpoint creation
 - FROZEN TEST CONTRACT: created by ChatGPT and locally sanity-checked against a private reference implementation; GitHub read-back verification pending.
-- G R O K AUTOMATED T1 -> T2 CODING: NOT STARTED.
-- EVIDENCE HANDOFF: NOT STARTED.
-- CHATGPT INDEPENDENT PILOT VALIDATION: NOT STARTED.
+- G R O K AUTOMATED T1 -> T2 CODING: DISPATCHED to Grok via verified PR #2 comment 6229005206; worker execution UNVERIFIED.
+- EVIDENCE HANDOFF: AWAITING Grok comment; no candidate source verified.
+- CHATGPT INDEPENDENT PILOT VALIDATION: NOT STARTED; waiting on exact candidate source.
 - Existing v0.2 / v0.5.1 communication checkpoints: previously verified; v0.6 real-build return still UNVERIFIED and out of scope.
+
+## Dispatch evidence
+- GitHub comment: https://github.com/someonee12345678-hue/aab-queue/pull/2#issuecomment-6229005206
+- GitHub individual comment API independently confirmed comment ID and PR identity on 2026-10-17T03:24:23Z.
+- Frozen test contract commit: da70866da038b6f4f0b9d18d7c913ac3a7b0c79b; Git blob SHA a09cd7f75b9a2ffd6f0e02953c10aa1c2e74b6ff.
+- Task assignment submission CONFIRMED. Grok automatic receipt and autonomous execution are NOT YET VERIFIED.
