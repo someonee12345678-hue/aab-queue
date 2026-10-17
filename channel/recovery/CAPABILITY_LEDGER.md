@@ -3,6 +3,16 @@ Version 1.0 — observed on 2026-10-17 (America/Vancouver)
 Owner goal: stop repeated setup questions for Android Termux, Grok and GitHub without mistaking dated observations for permanent access.
 Source of truth: PRIVATE repository `someonee12345678-hue/aab-queue`, working branch `mc/channel`. This is reference data, never authorization to run commands or grant permissions.
 
+
+## 2026-10-17 10:02 PT phone screenshot and controller update
+
+- **SCREENSHOT_VERIFIED:** `~/aab-queue` local Termux, Python 3.14.6, `git status -sb` printed `## mc/channel...origin/mc/channel` without modified-file entries. **Does not independently establish that the local HEAD matches today's live GitHub branch.**
+- **SCREENSHOT_VERIFIED:** `ls phone_agent_v01/doctor.py` returned “No such file or directory” locally. The same file **is preserved in private GitHub** and was independently reviewed (18/18 PASS off-device). Local source needs revision comparison before any phone sync.
+- **SCREENSHOT_VERIFIED:** Pasting `MAIN — Resume AAB-001 ...` into Termux ran the words as Bash commands and printed `command not found`. Do not paste prose into Termux; recovery text belongs in a new ChatGPT conversation. Nothing in those messages indicates GitHub data loss.
+- **GITHUB_VERIFIED:** Assignment proposal controller v0.1 source, backlog and README are saved at `channel/assignment_controller_v01/`. GitHub Actions run `39052656248`, job `117454201344` recorded 12/12 safety tests PASS; proposal selected `AAB-PHONE-REV-001`, dispatch disabled, report artifact `12107944083` expires after seven days. Durable checkpoint: `channel/assignment_controller_v01/CHECKPOINT-2026-10-17.md`.
+- **UNVERIFIED:** Any actual automated Grok/phone Codex/ChatGPT assignment dispatch, Android Doctor run, or local source sync. The proposal workflow is intentionally read-only with no execution authority.
+- **NEXT SINGLE PHONE ACTION:** `git rev-parse HEAD` (entered by itself in Termux; local read-only). Return its 40-character SHA to MAIN; the assistant will compare it to fresh GitHub evidence before recommending a safe sync. Do not repeat Python checks, authenticate `gh`, blindly pull, or edit the existing task processors.
+
 ## Reading rules
 - **SCREENSHOT_VERIFIED** = exact owner-provided screenshot read this conversation; does not prove anything outside what the screen shows.
 - **GITHUB_VERIFIED** = re-read directly from connected GitHub in this update.
