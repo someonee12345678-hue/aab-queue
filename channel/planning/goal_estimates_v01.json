@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project": "AAB-001",
   "tracking_branch": "mc/channel",
-  "as_of_utc": "2026-10-17T07:19:00Z",
+  "as_of_utc": "2026-10-17T07:35:28Z",
   "target": "Bounded unattended GitHub-to-Grok programming, GitHub verification, automatic ChatGPT review/return, and one observed feedback cycle",
   "forecast_basis": "Subjective three-point engineering hours, adjusted with new evidence; not statistical confidence bounds or an SLA",
   "measured_history": [
@@ -55,13 +55,13 @@
     {
       "id": "CI",
       "label": "Set up one least-privilege GitHub Actions test and validate once",
-      "status": "TODO",
+      "status": "DONE",
       "active_hours": {
         "optimistic": 0.5,
         "likely": 1.5,
         "pessimistic": 4
       },
-      "evidence": null
+      "evidence": "GitHub Actions run 39014190117 on mc/channel, head commit dcdf715f07c140b1b906ba20f9dff3f2bc29ce29; job 117342767916 success, logs 'Ran 8 tests ... OK' on 2026-10-17T07:35Z; workflow .github/workflows/aab-mvp-python-ci.yml"
     },
     {
       "id": "EVENT_ID",
