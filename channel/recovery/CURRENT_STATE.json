@@ -126,5 +126,22 @@
     "no_browser_stealth": true,
     "no_implicit_auth_or_agent_execution": true,
     "loading_rule": "Read these files with capability ledger and verified checkpoint at the start of future AAB-001 MAIN sessions. Repository instructions are NOT model-wide memory or proof of automatic load."
+  },
+  "reliability_iteration": {
+    "observation_time_local": "2026-10-17 14:07 America/Vancouver",
+    "status": "VERIFIED_CONVERSATION_LENGTH_LIMIT__OTHER_FREEZES_UNVERIFIED",
+    "evidence": "Owner screenshot 2026-10-17, maximum conversation length banner; 2m34s shown is response duration, not proven runtime limit",
+    "incident_note": "channel/recovery/AAB-001-CONTEXT-LIMIT-TRIAGE-AND-THREE-LANE-PLAN-2026-10-17.md",
+    "learning_subgoal": "AAB-META-001",
+    "existing_lesson": "AAB-L004 in channel/learning/lessons_v01.json; avoid duplication",
+    "three_lanes": [
+      "MAIN_ARCHITECT",
+      "ENGINEERING_EXECUTION",
+      "RELIABILITY_LEARNING"
+    ],
+    "recurrence": "Hourly AAB Learning & Recovery Watch condition-watch enabled; GitHub evidence-read + documentation-only evidence-linked updates when available; no automatic live-code changes; first run not yet observed",
+    "no_replay": true,
+    "preserved_phone_next_action": "git rev-parse HEAD",
+    "caveat": "A watch schedule is not a guarantee of GitHub connector access or successful background documentation."
   }
 }
