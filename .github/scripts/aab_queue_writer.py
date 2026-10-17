@@ -159,20 +159,87 @@ def github_request(url, token, body=None):
         raise QueueBlocked(f"GitHub returned invalid response during {method} {urllib.parse.urlsplit(url).path}") from exc
 
 
-def main():
-    if len(sys.argv) != 2:
-        raise SystemExit("usage: python3 aab_queue_writer.py CLASSIFICATION_REPORT.json")
-    token = os.environ.get("AAB_GITHUB_TOKEN", "")
-    if not token:
-        raise SystemExit("BLOCKED: no scoped GitHub token; nothing queued")
-    report = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+def execute_with_receipt(report, read_json, create_json, receipt_path,
+                         summary_path=None):
+    """One attempt; persist a small secret-free outcome even when the attempt blocks.
+
+    Never performs a retry and never treats an outcome receipt as a queue record.
+    The report/transport are untrusted, so archive codes rather than exception bodies.
+    """
+    cid = report.get("source_comment_id") if isinstance(report, dict) else None
+    task = report.get("task_id") if isinstance(report, dict) else None
+    receipt = {
+        "protocol": "AAB-001/queue-attempt-v1",
+        "outcome": "BLOCKED",
+        "reason_code": "NOT_STARTED",
+        "source_comment_id": cid if type(cid) is int and cid > 0 else None,
+        "task_id": task if isinstance(task, str) and TASK_PATTERN.fullmatch(task) else None,
+        "workflow_run_id": os.environ.get("GITHUB_RUN_ID"),
+        "workflow_run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
+        "note": "Metadata-only attempt receipt; not a successful handoff or code review.",
+    }
     try:
-        outcome = process(report, lambda url: github_request(url, token),
-                          lambda url, body: github_request(url, token, body))
-        print(json.dumps(outcome, sort_keys=True))
-    except (QueueBlocked, ApiError) as exc:
-        print(f"BLOCKED: {exc}; no retry or backfill", file=sys.stderr)
-        raise SystemExit(1) from exc
+        result = process(report, read_json, create_json)
+        receipt["outcome"] = result["outcome"]
+        receipt["reason_code"] = "NONE"
+        if result.get("path"):
+            receipt["queue_path"] = result["path"]
+        if result.get("commit_sha"):
+            receipt["commit_sha"] = result["commit_sha"]
+    except QueueBlocked as exc:
+        message = str(exc)
+        if "queue create was not confirmed" in message or "queue create outcome unconfirmed" in message:
+            receipt["reason_code"] = "WRITE_UNCONFIRMED"
+        elif "connection failure" in message:
+            receipt["reason_code"] = "NETWORK_FAILURE"
+        elif "invalid response" in message:
+            receipt["reason_code"] = "INVALID_API_RESPONSE"
+        else:
+            receipt["reason_code"] = "VALIDATION_OR_CONFLICT"
+    except ApiError as exc:
+        receipt["reason_code"] = "API_HTTP_" + str(exc.code)
+    except Exception:
+        # Fail closed without leaking exception messages from untrusted responses.
+        receipt["reason_code"] = "UNEXPECTED_FAILURE"
+    Path(receipt_path).write_text(json.dumps(receipt, sort_keys=True, indent=2) + "\n",
+                                  encoding="utf-8")
+    line = receipt["outcome"] + ":" + receipt["reason_code"]
+    if summary_path:
+        with open(summary_path, "a", encoding="utf-8") as handle:
+            handle.write("## AAB queue attempt (not a review)\n\n")
+            handle.write("- Outcome: " + line + "\n")
+            handle.write("- Source comment ID: " + str(receipt["source_comment_id"]) + "\n")
+            handle.write("- This receipt does not confirm delivery to ChatGPT or Grok.\n")
+    if receipt["outcome"] == "BLOCKED":
+        print("BLOCKED:" + receipt["reason_code"] + "; no retry or backfill", file=sys.stderr)
+        return False
+    print(json.dumps(receipt, sort_keys=True))
+    return True
+
+
+def main():
+    receipt_path = Path("aab-handoff-queue-outcome.json")
+    try:
+        if len(sys.argv) != 2:
+            raise ValueError("missing report path")
+        report = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+        if not isinstance(report, dict):
+            raise ValueError("report must be an object")
+    except (OSError, ValueError):
+        report = {}
+    token = os.environ.get("AAB_GITHUB_TOKEN", "")
+    if token:
+        read_json = lambda url: github_request(url, token)
+        create_json = lambda url, body: github_request(url, token, body)
+    else:
+        def no_token(*args):
+            raise QueueBlocked("missing GitHub token")
+        read_json = no_token
+        create_json = no_token
+    success = execute_with_receipt(
+        report, read_json, create_json, receipt_path, os.environ.get("GITHUB_STEP_SUMMARY"))
+    if not success:
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":
