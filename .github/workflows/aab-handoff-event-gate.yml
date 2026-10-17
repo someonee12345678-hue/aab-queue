@@ -62,3 +62,11 @@ jobs:
         env:
           AAB_GITHUB_TOKEN: ${{ github.token }}
         run: python3 .github/scripts/aab_queue_writer.py aab-handoff-event-report.json
+      - name: Preserve queue attempt outcome, including blocked attempts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aab-handoff-queue-outcome-${{ github.event.comment.id }}
+          path: aab-handoff-queue-outcome.json
+          retention-days: 7
+          if-no-files-found: warn
