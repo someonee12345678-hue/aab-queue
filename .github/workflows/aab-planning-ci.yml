@@ -5,7 +5,8 @@ on:
     branches:
       - mc/channel
     paths:
-      - channel/planning/**
+      - channel/planning/*.py
+      - channel/planning/*.json
       - .github/workflows/aab-planning-ci.yml
 
 permissions:
