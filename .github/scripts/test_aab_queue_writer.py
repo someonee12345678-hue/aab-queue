@@ -2,9 +2,12 @@
 import base64
 import hashlib
 import json
+import tempfile
 import unittest
+import urllib.error
+from pathlib import Path
 
-from aab_queue_writer import API, ApiError, QueueBlocked, build_record, process
+from aab_queue_writer import API, ApiError, QueueBlocked, build_record, process, execute_with_receipt
 
 ID = 6239990001
 TASK = "AAB-NEW-TEST-001"
@@ -120,6 +123,80 @@ class QueueTests(unittest.TestCase):
             return {"content": base64.b64encode(b"[]").decode()}
         with self.assertRaisesRegex(QueueBlocked, "must be a JSON object"):
             process(REPORT, read, lambda a, b: self.fail("write"))
+
+    def test_queue_receipt_success_and_summary(self):
+        with tempfile.TemporaryDirectory() as directory:
+            receipt = Path(directory) / "outcome.json"
+            summary = Path(directory) / "summary.md"
+            writes = []
+            def read(url):
+                if url.endswith(f"/issues/comments/{ID}"):
+                    return COMMENT
+                raise ApiError(404)
+            def create(url, body):
+                writes.append(url)
+                return {"commit": {"sha": "b" * 40}}
+            self.assertTrue(execute_with_receipt(REPORT, read, create, receipt, summary))
+            data = json.loads(receipt.read_text())
+            self.assertEqual(data["outcome"], "QUEUED")
+            self.assertEqual(data["reason_code"], "NONE")
+            self.assertEqual(data["source_comment_id"], ID)
+            self.assertEqual(len(writes), 1)
+            self.assertIn("QUEUED:NONE", summary.read_text())
+
+    def test_uncertain_http_409_has_blocked_receipt_and_no_retry(self):
+        with tempfile.TemporaryDirectory() as directory:
+            receipt = Path(directory) / "outcome.json"
+            summary = Path(directory) / "summary.md"
+            writes = []
+            def read(url):
+                if url.endswith(f"/issues/comments/{ID}"):
+                    return COMMENT
+                raise ApiError(404)
+            def create(url, body):
+                writes.append(url)
+                raise ApiError(409)
+            self.assertFalse(execute_with_receipt(REPORT, read, create, receipt, summary))
+            self.assertEqual(len(writes), 1)
+            self.assertEqual(json.loads(receipt.read_text())["reason_code"], "WRITE_UNCONFIRMED")
+            self.assertIn("BLOCKED:WRITE_UNCONFIRMED", summary.read_text())
+
+    def test_network_errors_record_blocked_without_writes(self):
+        for exc in (urllib.error.URLError("offline"), TimeoutError("timed out")):
+            with self.subTest(type=type(exc).__name__), tempfile.TemporaryDirectory() as directory:
+                receipt = Path(directory) / "outcome.json"
+                summary = Path(directory) / "summary.md"
+                def read(url):
+                    raise exc
+                self.assertFalse(execute_with_receipt(
+                    REPORT, read, lambda a, b: self.fail("write"), receipt, summary))
+                data = json.loads(receipt.read_text())
+                self.assertEqual(data["outcome"], "BLOCKED")
+                self.assertEqual(data["reason_code"], "UNEXPECTED_FAILURE")
+                self.assertIn("BLOCKED:UNEXPECTED_FAILURE", summary.read_text())
+
+    def test_non_dict_existing_record_records_conflict_without_write(self):
+        with tempfile.TemporaryDirectory() as directory:
+            receipt = Path(directory) / "outcome.json"
+            summary = Path(directory) / "summary.md"
+            def read(url):
+                if url.endswith(f"/issues/comments/{ID}"):
+                    return COMMENT
+                return {"content": base64.b64encode(b"[]").decode()}
+            self.assertFalse(execute_with_receipt(
+                REPORT, read, lambda a, b: self.fail("write"), receipt, summary))
+            data = json.loads(receipt.read_text())
+            self.assertEqual(data["reason_code"], "VALIDATION_OR_CONFLICT")
+            self.assertIn("BLOCKED:VALIDATION_OR_CONFLICT", summary.read_text())
+
+    def test_irrelevant_event_records_ignored_receipt_without_api_calls(self):
+        with tempfile.TemporaryDirectory() as directory:
+            receipt = Path(directory) / "outcome.json"
+            self.assertTrue(execute_with_receipt(
+                {"status": "IGNORED_NOT_HANDOFF"},
+                lambda url: self.fail("read"), lambda a, b: self.fail("write"),
+                receipt))
+            self.assertEqual(json.loads(receipt.read_text())["outcome"], "IGNORED")
 
 
 if __name__ == "__main__":
