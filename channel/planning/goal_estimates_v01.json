@@ -2,7 +2,7 @@
   "schema_version": 1,
   "project": "AAB-001",
   "tracking_branch": "mc/channel",
-  "as_of_utc": "2026-10-17T07:46:55Z",
+  "as_of_utc": "2026-10-17T08:12:50Z",
   "target": "Bounded unattended GitHub-to-Grok programming, GitHub verification, automatic ChatGPT review/return, and one observed feedback cycle",
   "forecast_basis": "Subjective three-point engineering hours, adjusted with new evidence; not statistical confidence bounds or an SLA",
   "measured_history": [
@@ -43,6 +43,11 @@
       "id": "GITHUB_EVENT_GATE",
       "label": "GitHub native comment event identity and safe read-only classification",
       "evidence": "Actions run 39014903156, canary comment 6231365911"
+    },
+    {
+      "id": "AAB_MVP_APP_002",
+      "label": "Grok planning progress report recovered to GitHub and independently verified",
+      "evidence": "PR #2 comment 6231555377; mc/channel blobs b1d6caaaf830da652cc82f3a9f369019d0fa62a8 and f9cda4dc490fdbc655b4a2c69cecbef6c6b12b35; independent GitHub Actions planning run 39016505450 PASS with nine tests"
     }
   ],
   "milestones": [
