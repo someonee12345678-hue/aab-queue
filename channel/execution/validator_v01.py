@@ -4,8 +4,8 @@ from datetime import datetime, timezone
 
 REPO = "someonee12345678-hue/aab-queue"
 BRANCH = "mc/channel"
-SHA = re.compile(r"[0-9a-f]{40}\\Z")
-ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]{0,79}\\Z")
+SHA = re.compile(r"[0-9a-f]{40}\Z")
+ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]{0,79}\Z")
 ROLES = {"OWNER", "CHATGPT", "GROK", "PHONE_CODEX", "GITHUB_ACTIONS"}
 STATES = {"PENDING", "READY", "RUNNING", "REPORTED", "VERIFIED", "BLOCKED"}
 GOALS = {"PROPOSED", "APPROVED", "IN_PROGRESS", "BLOCKED", "VERIFIED_COMPLETE", "STOPPED"}
