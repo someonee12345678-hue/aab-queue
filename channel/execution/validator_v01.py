@@ -17,7 +17,7 @@ def require(ok, reason):
     if not ok:
         raise InvalidGoal(reason)
 
-def evaluate(goal, *, observed_branch=None, observed_commit=None, completed_keys=()):
+def evaluate(goal, *, observed_branch=None, observed_commit=None, completed_keys=(), verified_evidence=()):
     """Return a non-executable proposal. Strings in goal are untrusted data."""
     try:
         require(type(goal) is dict, "goal must be object")
@@ -32,8 +32,9 @@ def evaluate(goal, *, observed_branch=None, observed_commit=None, completed_keys
         dt = datetime.fromisoformat(goal["last_verified_utc"].replace("Z", "+00:00"))
         require(dt.tzinfo is not None and dt.utcoffset() == timezone.utc.utcoffset(dt), "timestamp timezone")
         require(type(goal.get("evidence_checkpoint")) is str and bool(goal["evidence_checkpoint"].strip()), "checkpoint")
-        require(observed_branch is None or observed_branch == BRANCH, "stale branch")
-        require(observed_commit is None or observed_commit == goal["base_commit"], "stale commit")
+        require(observed_branch == BRANCH, "missing or stale observed branch")
+        require(type(observed_commit) is str and SHA.fullmatch(observed_commit) and observed_commit == goal["base_commit"], "missing or stale observed commit")
+        require(type(verified_evidence) in (tuple, list, set, frozenset) and all(type(e) is str for e in verified_evidence), "verified evidence registry")
         steps = goal.get("steps")
         require(type(steps) is list and 0 < len(steps) <= 100, "steps")
         indexed, keys = {}, set()
@@ -45,7 +46,7 @@ def evaluate(goal, *, observed_branch=None, observed_commit=None, completed_keys
             require(s.get("assigned_role") in ROLES and s.get("status") in STATES, "role/status")
             require(type(s.get("prerequisite_step_ids")) is list and all(type(d) is str for d in s["prerequisite_step_ids"]), "dependencies")
             require(type(s.get("evidence_refs")) is list and all(type(e) is str and bool(e.strip()) for e in s["evidence_refs"]), "evidence")
-            require(s["status"] != "VERIFIED" or bool(s["evidence_refs"]), "verified without evidence")
+            require(s["status"] != "VERIFIED" or (bool(s["evidence_refs"]) and all(e in verified_evidence for e in s["evidence_refs"])), "verified without independently checked evidence")
             indexed[sid] = s
             keys.add(key)
         visiting, visited = set(), set()
@@ -65,6 +66,7 @@ def evaluate(goal, *, observed_branch=None, observed_commit=None, completed_keys
         if goal["next_authorized_action"] is not None:
             action = goal["next_authorized_action"]
             require(type(action.get("description")) is str and type(action.get("approval_ref")) is str, "action fields")
+        require(goal["goal_status"] != "VERIFIED_COMPLETE" or all(s["status"] == "VERIFIED" for s in steps), "inconsistent completed goal")
         if goal["stop"] or goal["goal_status"] in ("STOPPED", "BLOCKED"):
             return {"status": "STOPPED", "next_step_id": None, "execution_authorized": False}
         require(type(completed_keys) in (tuple, list, set, frozenset), "completed keys")
