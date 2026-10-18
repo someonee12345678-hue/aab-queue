@@ -1,7 +1,13 @@
 """Synthetic, offline-only tests for AAB-EXEC-001."""
 import copy
 import unittest
-from validator_v01 import evaluate
+from validator_v01 import evaluate as _evaluate
+
+def evaluate(goal, **kwargs):
+    options = {"observed_branch": "mc/channel", "observed_commit": "a"*40,
+               "verified_evidence": ("synthetic:proof1",)}
+    options.update(kwargs)
+    return _evaluate(goal, **options)
 
 def fixture():
     return {
@@ -51,6 +57,30 @@ class ValidatorTests(unittest.TestCase):
     def test_bad_timestamp(self):
         x=fixture(); x["last_verified_utc"]="2026-10-18"
         self.assertEqual(evaluate(x)["status"], "BLOCKED_INVALID_STATE")
+
+    def test_missing_observed_commit(self):
+        self.assertEqual(_evaluate(fixture(), observed_branch="mc/channel",
+                                   verified_evidence=("synthetic:proof1",))["status"], "BLOCKED_INVALID_STATE")
+    def test_missing_observed_branch(self):
+        self.assertEqual(_evaluate(fixture(), observed_commit="a"*40,
+                                   verified_evidence=("synthetic:proof1",))["status"], "BLOCKED_INVALID_STATE")
+    def test_unverified_evidence(self):
+        self.assertEqual(evaluate(fixture(), verified_evidence=())["status"], "BLOCKED_INVALID_STATE")
+    def test_partial_evidence_registry(self):
+        x=fixture(); x["steps"][0]["evidence_refs"].append("synthetic:missing")
+        self.assertEqual(evaluate(x)["status"], "BLOCKED_INVALID_STATE")
+    def test_inconsistent_completed_goal(self):
+        x=fixture(); x["goal_status"]="VERIFIED_COMPLETE"
+        self.assertEqual(evaluate(x)["status"], "BLOCKED_INVALID_STATE")
+    def test_valid_completed_goal(self):
+        x=fixture(); x["goal_status"]="VERIFIED_COMPLETE"
+        x["steps"][1]["status"]="VERIFIED"; x["steps"][1]["evidence_refs"]=["synthetic:proof2"]
+        self.assertEqual(evaluate(x, verified_evidence=("synthetic:proof1", "synthetic:proof2"))["status"], "NO_ELIGIBLE_STEP")
+    def test_fake_scope_not_authority(self):
+        x=fixture(); x["owner_scope_ref"]="FAKE-APPROVAL"
+        self.assertFalse(evaluate(x)["execution_authorized"])
+    def test_malformed_evidence_registry(self):
+        self.assertEqual(evaluate(fixture(), verified_evidence="synthetic:proof1")["status"], "BLOCKED_INVALID_STATE")
 
 if __name__ == "__main__":
     unittest.main()
