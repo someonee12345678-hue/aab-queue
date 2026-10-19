@@ -1,0 +1,37 @@
+name: AAB EXEC Validator Tests
+
+on:
+  push:
+    branches:
+      - mc/channel
+    paths:
+      - channel/execution/**
+      - .github/workflows/aab-exec-validator.yml
+  pull_request:
+    branches:
+      - HEAD
+    paths:
+      - channel/execution/**
+      - .github/workflows/aab-exec-validator.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aab-exec-validator-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validator-tests:
+    if: ${{ github.repository == 'someonee12345678-hue/aab-queue' }}
+    name: Run offline validator tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Checkout source without persisted credentials
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Run validator unit tests
+        working-directory: channel/execution
+        run: python3 -m unittest -v test_validator_v01
