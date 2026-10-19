@@ -27,3 +27,11 @@ Next: independently review edge cases and plan a bounded GitHub CI acceptance ga
 - The existing 20 synthetic tests were retained; 12 malformed-input/resource-bound tests were added. **32/32 offline tests passed** in the assistant-side isolated scratch environment before integration. GitHub readback confirmed both committed files exactly match those tested.
 - No Android run or GitHub Actions run was performed. The current workflow path filters do not include `channel/execution/**`, so this commit did not match the reviewed push triggers.
 - Validator still has no I/O, network, subprocess, or dispatch capability; every returned result keeps `execution_authorized=false`. No queue receipts, workflows, task permissions, PR state, or Support-held v0.6/PING processors were changed.
+
+## 2026-10-19 GitHub Actions acceptance
+- Owner approved one narrowly scoped test workflow. `.github/workflows/aab-exec-validator.yml` was added on `mc/channel` in commit `941dd1d2cca223b6075f4039686002a3bf758200`.
+- Triggers: pushes to `mc/channel` and pull requests targeting `HEAD`, filtered to `channel/execution/**` and the workflow file itself.
+- Job runs `python3 -m unittest -v test_validator_v01` from `channel/execution` on Ubuntu 24.04, with a three-minute timeout and `contents: read`. Checkout uses `persist-credentials: false`; no repository secrets are referenced.
+- GitHub Actions run `39290650346`, job `118190110055`: **32 tests passed; job conclusion SUCCESS**. The run log reports the standard Actions token permissions as Contents: read and Metadata: read.
+- PR #2 remains open and draft. No merge, other workflow/permission changes, worker/dispatch, phone run, or v0.6/PING processor changes occurred.
+- This supersedes the earlier “not CI” status and “Next” gate above. The validator has now passed the scoped GitHub CI gate; Android execution remains unverified.
