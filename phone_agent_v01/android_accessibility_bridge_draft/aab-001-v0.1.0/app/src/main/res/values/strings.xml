@@ -1,0 +1,3 @@
+<resources>
+    <string name="aab_accessibility_description">Draft AAB bridge. Reads visible text only when you press the Android accessibility button while ChatGPT is open. It may stage reviewed text in Termux, but never presses Enter.</string>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Draft only: no INTERNET permission and no Termux RUN_COMMAND permission. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <queries>
+        <package android:name="com.openai.chatgpt" />
+        <package android:name="ai.x.grok" />
+        <package android:name="com.termux" />
+        <intent><action android:name="android.intent.action.SEND" /><data android:mimeType="text/plain" /></intent>
+    </queries>
+    <application android:label="AI Bridge" android:allowBackup="false"
+        android:name=".BridgeApp" android:theme="@android:style/Theme.Material.Light.NoActionBar">
+        <activity android:name=".ui.MainActivity" android:exported="true" android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter android:label="AI Bridge: save reply">
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".accessibility.CapturePreviewActivity" android:exported="false" />
+        <service
+            android:name=".accessibility.ChatTermuxAccessibilityService"
+            android:exported="true"
+            android:label="AAB capture and staging (draft)"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/aab_accessibility_service" />
+        </service>
+    </application>
+</manifest>
