@@ -1,0 +1,41 @@
+name: AAB Assignment Controller (proposal only)
+
+on:
+  push:
+    branches:
+      - mc/channel
+    paths:
+      - channel/assignment_controller_v01/**
+      - .github/workflows/aab-assignment-controller.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aab-assignment-proposal-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  proposal:
+    if: ${{ github.repository == 'someonee12345678-hue/aab-queue' }}
+    name: Validate and propose next assignment
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Read trusted branch and checkpoint
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Run isolated no-network controller safety tests
+        working-directory: channel/assignment_controller_v01
+        run: python3 -m unittest -v test_controller
+      - name: Calculate next read-only assignment proposal
+        working-directory: channel/assignment_controller_v01
+        run: python3 controller.py --state ../recovery/CURRENT_STATE.json --backlog BACKLOG.json --output assignment-controller-report.json
+      - name: Preserve the bounded assignment proposal
+        uses: actions/upload-artifact@v4
+        with:
+          name: aab-assignment-proposal-${{ github.run_id }}
+          path: channel/assignment_controller_v01/assignment-controller-report.json
+          retention-days: 7
+          if-no-files-found: error

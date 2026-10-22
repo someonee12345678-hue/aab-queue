@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "project": "AAB-001",
+  "checkpoint_status": "VERIFIED_PERSISTED",
+  "as_of_date": "2026-10-20",
+  "repository": "someonee12345678-hue/aab-queue",
+  "repository_visibility": "private",
+  "working_branch": "mc/channel",
+  "default_branch": "HEAD",
+  "pull_request": 2,
+  "active_scope": "AAB-PHONE-AGENT-001",
+  "phase": "ANDROID_PHONE_CLONE_REVISION_CHECK_PENDING",
+  "triggering_recovery_code": "AAB-ERR-CHAT-001",
+  "recovery_evidence": "Owner-provided screenshot of browser banner: You've reached the maximum length for this conversation, but you can keep talking by starting a new chat.",
+  "completed": [
+    {
+      "work": "Phone-side AAB Doctor source recovered from Grok handoff",
+      "status": "VERIFIED",
+      "evidence": "PR #2 comment 6236560957; saved directory phone_agent_v01 on mc/channel"
+    },
+    {
+      "work": "Independent AAB Doctor source checksum validation",
+      "status": "PASS",
+      "evidence": "channel/AAB-001-PHONE-AGENT-001-INDEPENDENT-REVIEW-2026-10-17.md; four file SHA256 matches"
+    },
+    {
+      "work": "Independent bounded AAB Doctor tests on separate Python 3.13.5 runner",
+      "status": "PASS",
+      "test_count": 18,
+      "evidence": "channel/AAB-001-PHONE-AGENT-001-INDEPENDENT-REVIEW-2026-10-17.md; PR #2 review comment 6236772954"
+    },
+    {
+      "work": "Real GitHub handoff queue creation",
+      "status": "VERIFIED",
+      "source_comment_id": 6236560957,
+      "queue_path": "channel/handoffs/6236560957.json",
+      "workflow_run_id": 39049184153
+    },
+    {
+      "work": "Independent review report returned",
+      "status": "VERIFIED",
+      "evidence": "PR #2 comment 6236772954; status PASS on limited offline diagnostic, NOT Android execution"
+    },
+    {
+      "work": "Automatic assignment proposal controller v0.1",
+      "status": "PASS",
+      "evidence": "GitHub Actions run 39052656248; 12/12 no-network tests PASS; assignment-controller-report status PROPOSED_NOT_DISPATCHED, dispatch false; channel/assignment_controller_v01/CHECKPOINT-2026-10-17.md",
+      "version": "0.1",
+      "automatic_dispatch": "NOT_IMPLEMENTED"
+    }
+  ],
+  "not_verified": [
+    "Doctor execution on user's Android 16 Termux",
+    "GitHub CLI authentication on phone (previous screenshot showed not logged in)",
+    "Persistent unattended Codex bridge or background agent",
+    "Reliable native ChatGPT event wake with verified source comment ID",
+    "Complete unattended review-and-feedback loop",
+    "AAB Doctor execution on user's Android Termux (Python 3.14.6 compatible version installed, but doctor not run there)",
+    "Automatic execution of controller proposals by Grok, ChatGPT or phone Codex",
+    "Synchronisation of local ~/aab-queue revision to GitHub mc/channel",
+    "Actual Android Termux Doctor execution"
+  ],
+  "protected_constraints": [
+    "Do not rerun prior passed 18 tests without changed source",
+    "Do not create, edit, or replay existing v0.6/PING task processors while OpenAI Support investigation is pending",
+    "Do not replay old GitHub comments or overwrite queue receipts",
+    "Do not assume GitHub queue receipt is an approval or that it reflects latest review stage",
+    "No paid APIs, browser-stealth automation, login bypass or credentials in GitHub/comments",
+    "No real personal/legal records until security and recovery are validated"
+  ],
+  "next_single_owner_action": {
+    "chat": "MAIN",
+    "device": "Android phone — Termux",
+    "command": "git rev-parse HEAD",
+    "mode": "READ_ONLY_NO_NETWORK",
+    "purpose": "Read the exact local ~/aab-queue Git commit so ChatGPT can compare it to remote mc/channel before any sync or Doctor execution.",
+    "do_not_do": "Do not paste the MAIN resume prompt into Bash. Do not fetch/pull/push, authenticate gh, run the Doctor, edit files or run an agent yet.",
+    "after": "Send the resulting commit SHA or a screenshot to the MAIN ChatGPT thread."
+  },
+  "resume_prompt": "MAIN — Resume AAB-001 from private repo someonee12345678-hue/aab-queue mc/channel. FIRST read AGENTS.md, channel/recovery/OPERATING_RULES.md, CURRENT_STATE.json and CAPABILITY_LEDGER.md, plus relevant latest verified checkpoint. Owner-selected architecture: GitHub + Grok + authorized local phone-side Codex + ChatGPT reviewer. No browser stealth, no secret relay, no repeated passed checks or v0.6/PING task modification. Verified queue receipt 6236560957 and independent Doctor 18/18, controller 12/12 proposal-only. Phone Python 3.14.6 already verified; Doctor absent locally in last screenshot. SINGLE current phone gate: in ~/aab-queue run git rev-parse HEAD and report SHA; compare with live remote mc/channel before sync.",
+  "device_capability_ledger": "channel/recovery/CAPABILITY_LEDGER.md",
+  "phone_evidence": {
+    "observed_date_local": "2026-10-17 10:02 America/Vancouver",
+    "source": "Owner screenshot of Termux",
+    "python3_version": "3.14.6",
+    "python3_version_status": "SCREENSHOT_VERIFIED",
+    "shell_working_directory": "~/aab-queue",
+    "gh_binary_status": "SCREENSHOT_VERIFIED earlier 2026-10-17; current GitHub login UNVERIFIED",
+    "phone_codex_reported_git_revision": "f02c77c (abbreviated; CODEX-REPORTED and not independently reconciled to current remote)",
+    "local_work_branch": "mc/channel",
+    "local_doctor_path": "NOT_FOUND_SCREENSHOT_VERIFIED",
+    "git_status": "## mc/channel...origin/mc/channel; no modified files shown",
+    "local_revision": "UNVERIFIED_NEEDS_READ_ONLY_CHECK",
+    "bash_pasted_chat_prompt": "Harmless command-not-found errors; paste resume prompts in ChatGPT chat, not Bash"
+  },
+  "last_verified_runtime_evidence": {
+    "queue_receipt": "channel/handoffs/6236560957.json; GitHub Actions run 39049184153 SUCCESS",
+    "phone_agent": "channel/AAB-001-PHONE-AGENT-001-INDEPENDENT-REVIEW-2026-10-17.md; 18/18 independent PASS; phone execution UNVERIFIED",
+    "source": "connected GitHub read on 2026-10-17 and owner Termux screenshot",
+    "assignment_controller": "GitHub Actions run 39052656248 successful; 12/12 test PASS; report artifact 12107944083; source checkpoint channel/assignment_controller_v01/CHECKPOINT-2026-10-17.md",
+    "phone_local_doctor_absent": "Owner screenshot 2026-10-17 10:02 PT; Python 3.14.6 and branch mc/channel verified; local commit unknown"
+  },
+  "last_diagnosed_error": "AAB-ERR-PHONE-008",
+  "controller_checkpoint": {
+    "mode": "PROPOSE_ONLY",
+    "status": "VERIFIED_GITHUB_CI_PASS",
+    "workflow": ".github/workflows/aab-assignment-controller.yml",
+    "source": "channel/assignment_controller_v01/controller.py",
+    "backlog": "channel/assignment_controller_v01/BACKLOG.json",
+    "durable_checkpoint": "channel/assignment_controller_v01/CHECKPOINT-2026-10-17.md",
+    "run_id": 39052656248,
+    "test_count": 12,
+    "test_result": "PASS",
+    "selected_task": "AAB-PHONE-REV-001",
+    "actual_automatic_dispatch": false,
+    "phone_work_execution": false,
+    "report_artifact_id": 12107944083,
+    "artifact_retention_days": 7
+  },
+  "operating_policy": {
+    "status": "OWNER_DIRECTED_PROJECT_POLICY_PERSISTED",
+    "rules": "channel/recovery/OPERATING_RULES.md",
+    "repo_agent_instructions": "AGENTS.md",
+    "owner_architecture_decision": "channel/AAB-001-ARCHITECTURE-DECISION-GITHUB-GROK-PHONE-CODEX-2026-10-17.md",
+    "primary_design": "GitHub event queue and independent CI; Grok approved programming; Android phone-side Codex as separately authorized local agent; ChatGPT architecture/review",
+    "no_browser_stealth": true,
+    "no_implicit_auth_or_agent_execution": true,
+    "loading_rule": "Read these files with capability ledger and verified checkpoint at the start of future AAB-001 MAIN sessions. Repository instructions are NOT model-wide memory or proof of automatic load."
+  },
+  "reliability_iteration": {
+    "observation_time_local": "2026-10-17 14:07 America/Vancouver",
+    "status": "VERIFIED_CONVERSATION_LENGTH_LIMIT__OTHER_FREEZES_UNVERIFIED",
+    "evidence": "Owner screenshot 2026-10-17, maximum conversation length banner; 2m34s shown is response duration, not proven runtime limit",
+    "incident_note": "channel/recovery/AAB-001-CONTEXT-LIMIT-TRIAGE-AND-THREE-LANE-PLAN-2026-10-17.md",
+    "learning_subgoal": "AAB-META-001",
+    "existing_lesson": "AAB-L004 in channel/learning/lessons_v01.json; avoid duplication",
+    "three_lanes": [
+      "MAIN_ARCHITECT",
+      "ENGINEERING_EXECUTION",
+      "RELIABILITY_LEARNING"
+    ],
+    "recurrence": "Hourly AAB Learning & Recovery Watch condition-watch enabled; GitHub evidence-read + documentation-only evidence-linked updates when available; no automatic live-code changes; first run not yet observed",
+    "no_replay": true,
+    "preserved_phone_next_action": "git rev-parse HEAD",
+    "caveat": "A watch schedule is not a guarantee of GitHub connector access or successful background documentation."
+  },
+  "latest_main_handoff": {
+    "path": "channel/recovery/AAB-001-MAIN-RECOVERY-2026-10-17-1547-PT.md",
+    "observed_local_time": "2026-10-17 15:47 America/Vancouver",
+    "verified_saved_commit": "25e8d046b45e6027f92c43ad2950e3e3defb543a",
+    "incident_code": "AAB-ERR-CHAT-001",
+    "next_phone_gate": "git rev-parse HEAD (read-only in ~/aab-queue); compare with refreshed remote mc/channel before any sync",
+    "note": "Prior MAIN exhausted conversation length; other stalls unverified. Saved a compact checked recovery file. Existing 18/18 and 12/12 passing tests preserved."
+  },
+  "current_verified_reconciliation": {
+    "checked_at_utc": "2026-10-20T08:10:00Z",
+    "repository": "someonee12345678-hue/aab-queue",
+    "branch": "mc/channel",
+    "branch_tip_sha": "a8db4840f8ec98ec6b8810425d504ddaaee49ae8",
+    "branch_tip_commit_time_utc": "2026-10-19T17:03:10Z",
+    "validator_ci": {
+      "workflow_run_id": 39290650346,
+      "job_id": 118190110055,
+      "workflow": ".github/workflows/aab-exec-validator.yml",
+      "status": "completed",
+      "conclusion": "success",
+      "tested_commit_sha": "941dd1d2cca223b6075f4039686002a3bf758200",
+      "tests_passed": 32,
+      "evidence": "channel/execution/VALIDATOR-V01-TEST-CHECKPOINT-2026-10-18.md at branch tip a8db4840f8ec98ec6b8810425d504ddaaee49ae8"
+    },
+    "interpretation": "Verified read-only GitHub Actions validator CI milestone and current remote branch binding. This does not verify Android/Termux execution, phone-local revision, automatic dispatch, or an end-to-end ChatGPT↔Grok bridge. The existing next phone action git rev-parse HEAD remains valid."
+  }
+}
