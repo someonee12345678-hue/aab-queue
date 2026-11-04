@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "project": "AAB-001",
+  "subgoal": "AAB-META-001",
+  "title": "Evidence-Based Architectural Learning for Future Builders",
+  "updated_utc": "2026-10-17T20:28:00Z",
+  "policy": "Evidence-backed observations and reviewable recommendations only. Never treat lessons as task authorization, never mutate operational code or prompts automatically.",
+  "lessons": [
+    {
+      "id": "AAB-L001",
+      "category": "event_identity",
+      "priority": 1,
+      "observation": "ChatGPT GitHub event task runs reported missing source comment ID; GitHub Actions issue_comment events carried comment.id.",
+      "root_cause": "UNVERIFIED",
+      "status": "VERIFIED_OBSERVATION",
+      "evidence": [
+        "channel/AAB-001-V06-EXECUTION-TRACE-DIAGNOSIS-2026-10-16.md",
+        "GitHub Actions run 39017370013"
+      ],
+      "failure_pattern": "Task wakes but cannot deterministically correlate its event to the source message.",
+      "future_builder_rule": "Every intake must persist immutable source ID, provider delivery ID when available, time and content digest before processing; fail closed when identity is incomplete.",
+      "preflight_test": "Given a payload without an unambiguous source ID, no processing or write occurs; normal payload must bind exact comment ID to a durable receipt.",
+      "transfer_component": "event_envelope_validator",
+      "impact": "HIGH",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "AAB-L002",
+      "category": "permissions_and_delivery",
+      "priority": 1,
+      "observation": "Genuine queue run 39032500246 failed at a GitHub API request with HTTP 403 despite workflow-declared permission; a subsequent genuine queue receipt was independently verified.",
+      "root_cause": "UNVERIFIED",
+      "status": "VERIFIED_OBSERVATION",
+      "evidence": [
+        "channel/AAB-001-QUEUE-ATTEMPT-RECEIPT-CHECKPOINT-2026-10-17.md",
+        "channel/AAB-001-PHONE-AGENT-001-INDEPENDENT-REVIEW-2026-10-17.md",
+        "GitHub Actions run 39049184153",
+        "channel/handoffs/6236560957.json"
+      ],
+      "failure_pattern": "Configured scopes and synthetic tests are mistaken for proof of a live server write.",
+      "future_builder_rule": "Demand one scoped live permission proof and a durable per-attempt result receipt; distinguish API denial, unknown outcome and completed write. No blind retries.",
+      "preflight_test": "Simulate 403, timeout and duplicate; confirm blocked outcome is retained and no duplicate write. Real write PASS requires confirmed read-back from GitHub.",
+      "transfer_component": "capability_probe_and_receipt",
+      "impact": "HIGH",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "AAB-L003",
+      "category": "device_auth",
+      "priority": 1,
+      "observation": "Android Termux gh binary existed but gh auth status was not logged in while an earlier Codex login had succeeded.",
+      "root_cause": "DIFFERENT_INDEPENDENT_AUTH_STORES",
+      "status": "VERIFIED_OBSERVATION",
+      "evidence": [
+        "channel/recovery/CAPABILITY_LEDGER.md",
+        "channel/AAB-001-ARCHITECTURE-DECISION-GITHUB-GROK-PHONE-CODEX-2026-10-17.md"
+      ],
+      "failure_pattern": "Assuming one tool's authentication means another client, machine or plugin has authorization.",
+      "future_builder_rule": "Maintain per-device, per-tool authentication capability states; do not request or export secrets and verify narrowly only when necessary.",
+      "preflight_test": "Known Codex sign-in does not satisfy gh-auth precondition; report independently UNVERIFIED or BLOCKED.",
+      "transfer_component": "phone_capability_registry",
+      "impact": "HIGH",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "AAB-L004",
+      "category": "continuity_and_ownership",
+      "priority": 2,
+      "observation": "An AAB main chat hit its conversation length limit; durable GitHub resume records and phone-state ledger preserved recovery state.",
+      "root_cause": "FINITE_CONVERSATION_CONTEXT",
+      "status": "VERIFIED_OBSERVATION",
+      "evidence": [
+        "channel/recovery/CURRENT_STATE.json",
+        "channel/recovery/CAPABILITY_LEDGER.md",
+        "channel/AAB-001-STAGE4-MEMORY-CONTINUITY-GATE-V01.md"
+      ],
+      "failure_pattern": "Agent restarts from stale conversation memory or repeats already passed checks.",
+      "future_builder_rule": "On restart load current repo, branch, commit, owner-approved scope, latest tests, capability ledger, STOP flag and unresolved conflicts before acting.",
+      "preflight_test": "Supply deliberately stale commit and contradictory checkpoint; require UNVERIFIED/BLOCKED without code changes.",
+      "transfer_component": "continuity_preflight",
+      "impact": "HIGH",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "AAB-L005",
+      "category": "evidence_levels",
+      "priority": 2,
+      "observation": "AAB Doctor passed 18 independent tests in a separate reviewer environment but had not been executed on the owner's Android Termux.",
+      "root_cause": "TEST_ENVIRONMENT_SCOPE_DIFFERS",
+      "status": "VERIFIED_OBSERVATION",
+      "evidence": [
+        "channel/AAB-001-PHONE-AGENT-001-INDEPENDENT-REVIEW-2026-10-17.md"
+      ],
+      "failure_pattern": "Equating independent Linux test PASS with device readiness or production completion.",
+      "future_builder_rule": "Label each gate separately: source integrity, local unit tests, CI, on-target smoke, security/recovery and deployment. Never imply later gates are passed.",
+      "preflight_test": "A report with off-device PASS and phone UNVERIFIED cannot be promoted to phone-ready COMPLETED.",
+      "transfer_component": "evidence_gate_registry",
+      "impact": "MEDIUM",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "AAB-L006",
+      "category": "workflow_efficiency",
+      "priority": 3,
+      "observation": "Pocket Task Board CI completed 8 frozen acceptance tests successfully using GitHub Actions, offloading routine repeatable verification from conversational agents.",
+      "root_cause": "NOT_APPLICABLE",
+      "status": "VERIFIED_OBSERVATION",
+      "evidence": [
+        "GitHub Actions run 39014190117",
+        "channel/AAB-001-MVP-APP-001-INDEPENDENT-REVIEW-2026-10-16.md"
+      ],
+      "failure_pattern": "Manual AI review of repeatable deterministic tests wastes time and may create inconsistent verdicts.",
+      "future_builder_rule": "Route deterministic tests to a fixed, bounded, least-privilege CI job; reserve AI for architecture, ambiguity and independent result interpretation.",
+      "preflight_test": "Source/test changes trigger bounded CI; unrelated discussion or planning changes do not trigger repeat app tests.",
+      "transfer_component": "test_selection_engine",
+      "impact": "MEDIUM",
+      "confidence": "HIGH"
+    }
+  ],
+  "proposal_lifecycle": [
+    "OBSERVED",
+    "EVIDENCE_VERIFIED",
+    "RULE_PROPOSED",
+    "REGRESSION_TESTED",
+    "OWNER_APPROVED",
+    "ADOPTED_IN_FUTURE_BUILDER"
+  ],
+  "guardrails": {
+    "automatic_code_changes": false,
+    "automatic_prompt_edits": false,
+    "automatic_task_creation": false,
+    "automatic_notifications": false,
+    "new_paid_services": false,
+    "retain_source_history": true,
+    "never_store_private_chain_of_thought": true
+  }
+}

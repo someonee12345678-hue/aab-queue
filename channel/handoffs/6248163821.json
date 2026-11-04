@@ -1,0 +1,18 @@
+{
+  "disclaimer": "Metadata-only queue receipt; no code execution, review or Grok authorization.",
+  "event_workflow_run_id": 39114887833,
+  "origin_authenticity": "UNVERIFIED_AGENT_IDENTITY",
+  "protocol": "AAB-001/durable-handoff-v1",
+  "review_status": "NOT_PERFORMED",
+  "source_body_sha256": "0ad4a9c03e52e6e3c9a6ceaf62d6f2c888689d15cf128ed7045d59f905450deb",
+  "source_comment_author_login": "someonee12345678-hue",
+  "source_comment_created_at": "2026-10-18T09:19:36Z",
+  "source_comment_id": 6248163821,
+  "source_comment_url": "https://github.com/someonee12345678-hue/aab-queue/pull/2#issuecomment-6248163821",
+  "source_posting_app_slug": "cursor",
+  "source_pull_request_number": 2,
+  "source_repository": "someonee12345678-hue/aab-queue",
+  "status": "PENDING_INDEPENDENT_REVIEW",
+  "task_id": "AAB-QUEUE-REVIEW-INTEGRATION-PLAN-001",
+  "verified_comment_via_github_get": true
+}

@@ -1,0 +1,18 @@
+{
+  "disclaimer": "Metadata-only queue receipt; no code execution, review or Grok authorization.",
+  "event_workflow_run_id": 39110389953,
+  "origin_authenticity": "UNVERIFIED_AGENT_IDENTITY",
+  "protocol": "AAB-001/durable-handoff-v1",
+  "review_status": "NOT_PERFORMED",
+  "source_body_sha256": "b2eb982c8b2e24fbe59f4976724bcac0ede3b09e013f2c326a7c442849572d56",
+  "source_comment_author_login": "someonee12345678-hue",
+  "source_comment_created_at": "2026-10-18T08:09:51Z",
+  "source_comment_id": 6247479638,
+  "source_comment_url": "https://github.com/someonee12345678-hue/aab-queue/pull/2#issuecomment-6247479638",
+  "source_posting_app_slug": "cursor",
+  "source_pull_request_number": 2,
+  "source_repository": "someonee12345678-hue/aab-queue",
+  "status": "PENDING_INDEPENDENT_REVIEW",
+  "task_id": "AAB-OVERNIGHT-AUTONOMY-RESEARCH-001",
+  "verified_comment_via_github_get": true
+}

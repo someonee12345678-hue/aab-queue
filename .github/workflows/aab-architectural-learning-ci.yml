@@ -1,0 +1,43 @@
+name: AAB Architectural Learning Acceptance
+
+on:
+  push:
+    branches:
+      - mc/channel
+    paths:
+      - channel/learning/README.md
+      - channel/learning/lessons_v01.json
+      - channel/learning/compile_blueprint.py
+      - channel/learning/test_compile_blueprint.py
+      - .github/workflows/aab-architectural-learning-ci.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aab-architectural-learning-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compile-review-draft:
+    name: Validate lessons and compile future-builder draft
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Checkout repository read-only
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Run synthetic evidence and blueprint tests
+        working-directory: channel/learning
+        run: python3 -m unittest -v test_compile_blueprint
+      - name: Compile read-only next-builder draft
+        working-directory: channel/learning
+        run: python3 compile_blueprint.py lessons_v01.json --output NEXT_BUILDER_BLUEPRINT.md
+      - name: Save ephemeral architecture draft for review
+        uses: actions/upload-artifact@v4
+        with:
+          name: aab-next-builder-blueprint
+          path: channel/learning/NEXT_BUILDER_BLUEPRINT.md
+          retention-days: 7
+          if-no-files-found: error

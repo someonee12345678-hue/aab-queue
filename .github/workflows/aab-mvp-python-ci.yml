@@ -1,0 +1,34 @@
+name: AAB MVP Python acceptance
+
+on:
+  push:
+    branches:
+      - mc/channel
+    paths:
+      - mvp_app_001/app.py
+      - mvp_app_001/test_acceptance.py
+      - .github/workflows/aab-mvp-python-ci.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aab-mvp-python-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  acceptance:
+    name: Pocket Task Board frozen tests
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify Python interpreter
+        run: python3 --version
+      - name: Run frozen Pocket Task Board acceptance contract
+        working-directory: mvp_app_001
+        run: python3 -m unittest -v test_acceptance
